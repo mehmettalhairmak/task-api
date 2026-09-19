@@ -29,18 +29,21 @@ export class TasksController {
     }
 
     @Get(':id')
-    findOne(@Param('id', ParseUUIDPipe) id: string) {
+    findOne(@Param('id', new ParseUUIDPipe({ version: '4' })) id: string) {
         return this.tasksService.findOne(id);
     }
 
     @Patch(':id')
-    update(@Param('id', ParseUUIDPipe) id: string, @Body() UpdateTaskDto: UpdateTaskDto) {
+    update(
+        @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
+        @Body() UpdateTaskDto: UpdateTaskDto,
+    ) {
         return this.tasksService.update(id, UpdateTaskDto);
     }
 
     @Delete(':id')
     @HttpCode(HttpStatus.NO_CONTENT)
-    remove(@Param('id', ParseUUIDPipe) id: string) {
-        this.tasksService.remove(id);
+    async remove(@Param('id', new ParseUUIDPipe({ version: '4' })) id: string) {
+        await this.tasksService.remove(id);
     }
 }
