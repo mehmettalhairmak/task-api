@@ -4,6 +4,7 @@ import { TasksService } from './tasks.service.js';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TaskEntity } from './entities/task.entity.js';
 import { TypeOrmTaskRepository } from './infrastructure/typeorm-tasks.repository.js';
+import { TASK_REPOSITORY } from './domain/tasks.repository.interface.js';
 
 @Module({
     imports: [TypeOrmModule.forFeature([TaskEntity])],
@@ -11,7 +12,7 @@ import { TypeOrmTaskRepository } from './infrastructure/typeorm-tasks.repository
     providers: [
         TasksService,
         {
-            provide: 'TASK_REPOSITORY',
+            provide: TASK_REPOSITORY,
             useClass: TypeOrmTaskRepository,
         },
     ],

@@ -1,10 +1,7 @@
-import { Get, Injectable } from '@nestjs/common';
-import { SkipEnvelope } from './common/decorators/skip-envelope.decorator.js';
+import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class AppService {
-    @SkipEnvelope()
-    @Get('health')
     checkHealth(): string {
         return 'OK';
     }
