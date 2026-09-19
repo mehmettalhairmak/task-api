@@ -1,5 +1,5 @@
-import { Inject, Injectable } from '@nestjs/common';
-import { ITaskRepository, TASK_REPOSITORY } from '../domain/tasks.repository.interface.js';
+import { Injectable } from '@nestjs/common';
+import { ITaskRepository } from '../domain/tasks.repository.interface.js';
 import { TaskEntity } from '../entities/task.entity.js';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
