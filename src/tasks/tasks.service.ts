@@ -4,6 +4,7 @@ import { UpdateTaskDto } from './dto/update-task.dto.js';
 import { TaskEntity } from './entities/task.entity.js';
 import { TASK_REPOSITORY } from './domain/tasks.repository.interface.js';
 import type { ITaskRepository } from './domain/tasks.repository.interface.js';
+import { TaskNotFoundException } from '../common/exceptions/task-not-found.exception.js';
 
 @Injectable()
 export class TasksService {
@@ -17,7 +18,7 @@ export class TasksService {
         const task = await this.taskRepository.findOne(id);
 
         if (!task) {
-            throw new NotFoundException(`Task with id "${id}" not found`);
+            throw new TaskNotFoundException(id);
         }
 
         return task;
@@ -31,12 +32,20 @@ export class TasksService {
     }
 
     async update(id: string, updateTaskDto: UpdateTaskDto): Promise<TaskEntity> {
-        await this.findOne(id); // Ensure the task exists before updating
-        return this.taskRepository.update(id, updateTaskDto);
+        const updatedTask = await this.taskRepository.update(id, updateTaskDto);
+
+        if (!updatedTask) {
+            throw new TaskNotFoundException(id);
+        }
+
+        return updatedTask;
     }
 
     async remove(id: string): Promise<void> {
-        await this.findOne(id); // Ensure the task exists before removing
-        return this.taskRepository.delete(id);
+        const deleted = await this.taskRepository.delete(id);
+
+        if (!deleted) {
+            throw new TaskNotFoundException(id);
+        }
     }
 }

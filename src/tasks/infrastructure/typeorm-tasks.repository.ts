@@ -21,18 +21,18 @@ export class TypeOrmTaskRepository implements ITaskRepository {
         return this.repo.save(entity);
     }
 
-    async update(id: string, data: Partial<TaskEntity>): Promise<TaskEntity> {
-        await this.repo.update(id, data);
-        const updatedEntity = await this.repo.findOneBy({ id });
+    async update(id: string, data: Partial<TaskEntity>): Promise<TaskEntity | null> {
+        const updatedResult = await this.repo.update(id, data);
 
-        if (!updatedEntity) {
-            throw new Error(`Task with id "${id}" not found`);
+        if (updatedResult.affected === 0) {
+            return null;
         }
 
-        return updatedEntity;
+        return this.repo.findOneBy({ id });
     }
 
-    async delete(id: string): Promise<void> {
-        await this.repo.delete(id);
+    async delete(id: string): Promise<boolean> {
+        const result = await this.repo.delete(id);
+        return (result.affected ?? 0) > 0;
     }
 }
