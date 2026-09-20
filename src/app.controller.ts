@@ -6,9 +6,9 @@ import { SkipEnvelope } from './common/decorators/skip-envelope.decorator.js';
 export class AppController {
     constructor(private readonly appService: AppService) {}
 
+    @Get()
     @SkipEnvelope()
-    @Get('health')
     getHello(): string {
-        return this.appService.checkHealth();
+        return this.appService.getHello();
     }
 }
